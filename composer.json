@@ -1,0 +1,22 @@
+{
+    "name": "commishes/figure-sdk",
+    "description": "SDK for interacting with a figure image server",
+    "type": "library",
+    "license": "AGPL",
+    "autoload": {
+        "psr-4": {
+            "commishes\\figureSdk\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "César de la Cal Bretschneider",
+            "email": "cesar@magic3w.com"
+        }
+    ],
+    "require": {
+        "gmostafa/php-graphql-client": "^1.13",
+        "guzzlehttp/guzzle": "^7.7",
+        "league/glide": "^2.3"
+    }
+}
