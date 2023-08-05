@@ -12,21 +12,21 @@ use League\Glide\Urls\UrlBuilder;
 class Client
 {
 	
+	private string $salt;
 	private string $url;
 	private string $apitoken;
 	private GraphQLClient $client;
 	
-	public function __construct(string $url, ?string $apitoken)
+	public function __construct(string $url, ?string $apitoken, ?string $salt = null)
 	{
 		$this->url = $url;
 		$this->apitoken = $apitoken;
+		$this->salt     = $salt?: bin2hex(random_bytes(10));
 		
 		$this->client = new GraphQLClient(
 			$url . 'api/v1',
 			$apitoken? ['Authorization' => sprintf('Bearer %s', $apitoken)] : []
 		);
-		
-		var_dump($this->client);
 	}
 	
 	public function upload(string $filename) : Upload
@@ -125,10 +125,9 @@ class Client
 		else { $expires = time() + $ttl; }
 		
 		$builder = new UrlBuilder('/video/', new Signature($this->apitoken));
-		$salt    = bin2hex(random_bytes(10));
 		
 		return rtrim($this->url, '/') . $builder->getUrl(
-			sprintf('%d/%s/%s', $id, $expires === null? 'never' : $expires, $salt), 
+			sprintf('%d/%s/%s', $id, $expires === null? 'never' : $expires, $this->salt), 
 			$options
 		);
 	}
