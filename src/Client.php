@@ -101,7 +101,7 @@ class Client
 		return true;
 	}
 	
-	public function url(int $id, array $options = [], ?int $ttl = 14400): string
+	public function url(int $id, array $options = [], ?int $ttl = null): string
 	{
 		
 		if ($ttl === null) { $expires = null; }
@@ -117,7 +117,7 @@ class Client
 		);
 	}
 	
-	public function video(int $id, array $options = [], ?int $ttl = 14400): string
+	public function video(int $id, array $options = [], ?int $ttl = null): string
 	{
 		
 		if ($ttl === null) { $expires = null; }
