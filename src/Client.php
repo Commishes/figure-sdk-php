@@ -109,10 +109,9 @@ class Client
 		else { $expires = time() + $ttl; }
 		
 		$builder = new UrlBuilder('/image/', new Signature($this->apitoken));
-		$salt    = bin2hex(random_bytes(10));
 		
 		return rtrim($this->url, '/') . $builder->getUrl(
-			sprintf('%d/%s/%s', $id, $expires === null? 'never' : $expires, $salt), 
+			sprintf('%d/%s/%s', $id, $expires === null? 'never' : $expires, $this->salt), 
 			$options
 		);
 	}
