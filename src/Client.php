@@ -76,9 +76,7 @@ class Client
 			
 		}
 		catch(ServerException $e) {
-			var_dump($e);
-			var_dump($e->getRequest());
-			var_dump($e->getResponse()->getBody());
+			throw $e;
 		}
 		return true;
 	}
@@ -128,6 +126,21 @@ class Client
 		return rtrim($this->url, '/') . $builder->getUrl(
 			sprintf('%d/%s/%s', $id, $expires === null? 'never' : $expires, $this->salt), 
 			$options
+		);
+	}
+	
+	public function download(int $id, ?int $ttl = null): string
+	{
+		
+		if ($ttl === null) { $expires = null; }
+		elseif ($ttl > 50 * 365 * 86400) { $expires = $ttl; }
+		else { $expires = time() + $ttl; }
+		
+		$builder = new UrlBuilder('/download/', new Signature($this->apitoken));
+		
+		return rtrim($this->url, '/') . $builder->getUrl(
+			sprintf('%d/%s/%s', $id, $expires === null? 'never' : $expires, $this->salt), 
+			[]
 		);
 	}
 }
